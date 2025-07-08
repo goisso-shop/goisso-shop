@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goisso Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <style>
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('1733685250850.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.4;
+      z-index: -1;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #1a1a2e;
+      color: #fff;
+    }
+    .section-bg {
+      background-color: #2d2d44;
+    }
+    .btn-purple {
+      background-color: #7f00ff;
+    }
+    .btn-purple:hover {
+      background-color: #5e00cc;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body class="text-white">
+  <header class="bg-black bg-opacity-70 text-white py-4 shadow-md">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-4">
+      <h1 class="text-2xl font-bold">Goisso Shop</h1>
+      <nav class="space-x-4">
+        <a href="#produits" class="hover:underline">Produits</a>
+        <a href="#contact" class="hover:underline">Contact</a>
+        <a href="#connexion" class="hover:underline">Compte</a>
+        <button onclick="showCart()" class="bg-white text-purple-800 px-3 py-1 rounded">Panier 🛒 (<span id="cart-count">0</span>)</button>
+      </nav>
+    </div>
+  </header>
+
+  <section id="connexion" class="max-w-md mx-auto mt-10 section-bg p-6 rounded shadow">
+    <h2 class="text-xl font-bold mb-4">Connexion / Inscription</h2>
+    <form id="auth-form" class="space-y-4">
+      <input type="email" id="email" placeholder="Email" class="w-full border p-2 rounded text-black" required>
+      <input type="password" id="password" placeholder="Mot de passe" class="w-full border p-2 rounded text-black" required>
+      <button type="submit" class="w-full btn-purple text-white py-2 rounded">Connexion / Inscription</button>
+    </form>
+  </section>
+
+  <section id="produits" class="max-w-7xl mx-auto py-16 px-4">
+    <h2 class="text-3xl font-bold mb-8 text-center">Nos Produits (FCFA)</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white text-black rounded-xl shadow-md overflow-hidden hover:shadow-xl transition p-4">
+        <img src="IMG-20250707-WA0027.jpg" class="w-full h-40 object-cover rounded" alt="Pantalon">
+        <h3 class="text-lg font-semibold mt-3">Pantalon mixte avec papillons</h3>
+        <p class="text-gray-600 text-sm">Style unisexe, doux et confortable.</p>
+        <p class="text-purple-800 font-bold mt-2">6 000 FCFA</p>
+        <button onclick="addToCart('Pantalon mixte', 6000)" class="mt-2 btn-purple text-white px-4 py-1 rounded">Ajouter au panier</button>
+      </div>
+      <div class="bg-white text-black rounded-xl shadow-md overflow-hidden hover:shadow-xl transition p-4">
+        <img src="IMG-20250707-WA0058.jpg" class="w-full h-40 object-cover rounded" alt="Porte-manteau">
+        <h3 class="text-lg font-semibold mt-3">Porte-manteau multifonctionnel</h3>
+        <p class="text-gray-600 text-sm">En métal, idéal pour économiser de l'espace.</p>
+        <p class="text-purple-800 font-bold mt-2">6 980 FCFA</p>
+        <button onclick="addToCart('Porte-manteau', 6980)" class="mt-2 btn-purple text-white px-4 py-1 rounded">Ajouter au panier</button>
+      </div>
+      <div class="bg-white text-black rounded-xl shadow-md overflow-hidden hover:shadow-xl transition p-4">
+        <img src="IMG-20250707-WA0056.jpg" class="w-full h-40 object-cover rounded" alt="Montre connectée">
+        <h3 class="text-lg font-semibold mt-3">Montre connectée A58 Plus</h3>
+        <p class="text-gray-600 text-sm">Design élégant avec accessoires inclus.</p>
+        <p class="text-purple-800 font-bold mt-2">7 500 FCFA</p>
+        <button onclick="addToCart('Montre A58 Plus', 7500)" class="mt-2 btn-purple text-white px-4 py-1 rounded">Ajouter au panier</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-xl mx-auto py-8 px-4">
+    <h2 class="text-xl font-bold mb-4">Votre position</h2>
+    <button onclick="getLocation()" class="btn-purple text-white px-4 py-2 rounded">Activer la géolocalisation</button>
+    <p id="location-result" class="mt-2 text-sm"></p>
+  </section>
+
+  <section class="bg-gray-800 py-10">
+    <div class="max-w-xl mx-auto text-center">
+      <h2 class="text-2xl font-bold mb-4">Paiement sécurisé</h2>
+      <p class="mb-2">Méthode prioritaire :</p>
+      <ul class="list-disc list-inside text-left">
+        <li>MTN Mobile Money</li>
+        <li>Bientôt : Visa / Moov</li>
+      </ul>
+      <button class="btn-purple text-white px-4 py-2 mt-4 rounded">Payer avec MTN Mobile Money</button>
+    </div>
+  </section>
+
+  <footer id="contact" class="bg-black text-white py-6">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p>Contact : <a href="tel:+22952723443" class="underline">+229 52 72 34 43</a></p>
+      <p>Email : <a href="mailto:Goissoseth@gmail.com" class="underline">Goissoseth@gmail.com</a></p>
+      <p>WhatsApp : <a href="https://wa.me/22952723443" class="underline">Écris-moi ici</a></p>
+      <p class="mt-2 text-sm">© 2025 Goisso Shop. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    document.getElementById('auth-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        alert('Connecté !');
+      } catch (error) {
+        await auth.createUserWithEmailAndPassword(email, password);
+        alert('Compte créé et connecté !');
+      }
+    });
+
+    let cart = [];
+    function addToCart(nom, prix) {
+      cart.push({ nom, prix });
+      document.getElementById('cart-count').textContent = cart.length;
+    }
+
+    function showCart() {
+      let content = cart.map(item => `${item.nom} - ${item.prix} FCFA`).join('\n');
+      alert("Panier:\n" + content);
+    }
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          document.getElementById('location-result').textContent = `Latitude: ${lat}, Longitude: ${lon}`;
+        });
+      } else {
+        alert("La géolocalisation n'est pas supportée par ce navigateur.");
+      }
+    }
+  </script>
+</body>
+</html>
