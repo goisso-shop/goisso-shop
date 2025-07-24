@@ -85,8 +85,26 @@
     </div>
   </div>
 
+  <!-- Intégration du SDK Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js"></script>
-  <script src="auth.js"></script> <!-- Ton fichier de configuration firebase -->
+  <script>
+const firebaseConfig = {
+‎  apiKey: "AIzaSyDAdzz5PxCInMpw4L7SmmPeFhWLEzal5ls",
+‎  authDomain: "seth-shop.firebaseapp.com",
+‎  projectId: "seth-shop",
+‎  storageBucket: "seth-shop.firebasestorage.app",
+‎  messagingSenderId: "651151563819",
+‎  appId: "1:651151563819:web:dbee518579f492bb791e6e",
+‎  measurementId: "G-80Q8KFYKYL"
+‎};
+
+    // Initialisation Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <script src="auth.js"></script>
 </body>
 </html>
+>
+
+  
