@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Créer un compte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Algerian&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Algerian', sans-serif;
+      background: linear-gradient(to right, #3b0a49, #000);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .register-container {
+      background-color: #1c1c1c;
+      padding: 40px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    h2 {
+      color: #a855f7;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 5px;
+      border: none;
+      margin-bottom: 10px;
+      background: #fff;
+      color: #000;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #a855f7;
+      color: white;
+      padding: 14px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #7e22ce;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .login-link a {
+      color: #a855f7;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h2>Créer un compte</h2>
+    <form id="registerForm">
+      <label for="nom">Noms</label>
+      <input type="text" id="nom" required>
+
+      <label for="prenom">Prénom(s)</label>
+      <input type="text" id="prenom" required>
+
+      <label for="ville">Ville</label>
+      <input type="text" id="ville" required>
+
+      <label for="specialite">Spécialité d'achat</label>
+      <input type="text" id="specialite" required>
+
+      <label for="email">Adresse Email</label>
+      <input type="email" id="email" required>
+
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" required>
+
+      <label for="confirmPassword">Confirmer le mot de passe</label>
+      <input type="password" id="confirmPassword" required>
+
+      <button type="submit">S'inscrire</button>
+    </form>
+
+    <div class="login-link">
+      <p>Déjà un compte ? <a href="login.html">Se connecter</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (password !== confirmPassword) {
+        alert('Les mots de passe ne correspondent pas.');
+        return;
+      }
+
+      // Ici tu peux appeler Firebase Auth avec les valeurs des champs.
+      alert('Inscription réussie (logique Firebase à ajouter ici).');
+    });
+  </script>
+</body>
+</html>
